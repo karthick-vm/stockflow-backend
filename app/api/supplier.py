@@ -28,7 +28,7 @@ def get_all_suppliers(db: Session = Depends(get_db), current_user: User = Depend
 
 @router.put("/{supplier_id}", response_model=SupplierResponse)
 def update_supplier(supplier_id: int, supplier_data: SupplierCreate,
-                    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+                    db: Session = Depends(get_db), current_user: User = Depends(require_admin)):
     try:
         return update_supplier_service(db, supplier_id, supplier_data)
     except ValueError as e:

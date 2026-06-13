@@ -61,6 +61,29 @@ uvicorn app.main:app --reload
 http://127.0.0.1:8000/docs
 ```
 
+## Run with Docker
+
+### Build and Start
+
+```bash
+docker compose up --build
+```
+
+### Access API Documentation
+
+Open:
+
+```text
+http://localhost:8000/docs
+```
+
+### Stop Containers
+
+```bash
+docker compose down
+```
+
+
 ## Main Endpoints
 
 ```http

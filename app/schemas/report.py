@@ -6,6 +6,6 @@ class TopSellingProduct(BaseModel):
     total_sold: int
 
 class MonthlySalesSummary(BaseModel):
-    month: datetime
+    month: str
     revenue: float
 

@@ -4,6 +4,7 @@ from app.schemas.sale import SaleItemCreate
 from app.models.sale import Sale
 from app.models.sale_item import SaleItem
 from app.models.product import Product
+from app.core.cache import invalidate_reports_cache
 
 def create_sale(db: Session, user_id: int, items: list[SaleItemCreate]):
     total_amount = 0
@@ -34,6 +35,7 @@ def create_sale(db: Session, user_id: int, items: list[SaleItemCreate]):
 
     sale.total_amount = total_amount
     db.commit()
+    invalidate_reports_cache()
     db.refresh(sale)
     return sale
 

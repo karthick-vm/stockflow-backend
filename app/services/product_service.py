@@ -4,6 +4,7 @@ from app.schemas.product import ProductCreate
 from app.models.product import Product
 from app.models.category import Category
 from app.models.supplier import Supplier
+from app.core.cache import invalidate_reports_cache
 
 def create_product(db: Session, product_data: ProductCreate):
     category = db.query(Category).filter(Category.id == product_data.category_id).first()
@@ -15,6 +16,7 @@ def create_product(db: Session, product_data: ProductCreate):
     product = Product(**product_data.model_dump())
     db.add(product)
     db.commit()
+    invalidate_reports_cache()
     db.refresh(product)
     return product
 
@@ -33,6 +35,7 @@ def update_product(db: Session, product_id: int, product_data: ProductCreate):
     product.category_id = (product_data.category_id)
     product.supplier_id = (product_data.supplier_id)
     db.commit()
+    invalidate_reports_cache()
     db.refresh(product)
     return product
 
@@ -44,6 +47,7 @@ def delete_product(db: Session, product_id: int):
         raise ValueError("Cannot delete product with sales history")
     db.delete(product)
     db.commit()
+    invalidate_reports_cache()
 
 def restock_product(db: Session, product_id: int, quantity: int):
     product = db.query(Product).filter(Product.id == product_id).first()
@@ -51,6 +55,7 @@ def restock_product(db: Session, product_id: int, quantity: int):
         raise ValueError("Product not found")
     product.quantity += quantity
     db.commit()
+    invalidate_reports_cache()
     db.refresh(product)
     return product
 
